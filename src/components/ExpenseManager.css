@@ -3,6 +3,31 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
+.offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #ff9800;
+  color: white;
+  padding: 0.75rem;
+  text-align: center;
+  z-index: 999;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .app-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -27,6 +52,7 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
+  padding-top: 1rem;
 }
 
 .form-section {
@@ -45,6 +71,15 @@
 
 .right-column {
   min-width: 0;
+}
+
+.loading {
+  background: white;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: #666;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 1024px) {
@@ -72,5 +107,12 @@
 
   .app-header p {
     font-size: 1rem;
+  }
+
+  .cloud-badge {
+    position: static;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    display: inline-block;
   }
 }

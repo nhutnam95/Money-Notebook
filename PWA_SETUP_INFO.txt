@@ -1,0 +1,60 @@
+📱 HƯỚNG DẪN NHANH - CÀI ĐẶT ỨNG DỤNG TRÊN MOBILE
+================================================
+
+✨ TÍnh NĂNG:
+- Cài đặt như ứng dụng native
+- Hoạt động offline (dữ liệu đã được lưu)
+- Lưu dữ liệu vào localStorage (bảo mật, không gửi lên server)
+- Tải nhanh và mượt mà
+
+🔧 SETUP PWA ĐÃ HOÀN TẤT:
+✅ manifest.json - Cấu hình ứng dụng
+✅ service worker (sw.js) - Caching & offline support
+✅ Meta tags - iOS/Android support
+✅ InstallPrompt component - Gợi ý cài đặt tự động
+
+📝 CÁC FILE QUAN TRỌNG:
+1. public/manifest.json - Cấu hình PWA (tên, icon, màu sắc, shortcuts)
+2. public/sw.js - Service Worker để cache & offline
+3. src/components/InstallPrompt.tsx - Gợi ý cài đặt tự động
+4. index.html - Meta tags cho PWA
+5. src/main.tsx - Đăng ký Service Worker
+
+🚀 CHẠY LOCALLY:
+npm run dev
+- Truy cập: http://localhost:5173
+- Lưu ý: PWA trên localhost có thể không hiển thị install prompt
+- Trên production (HTTPS), prompt sẽ hiển thị tự động
+
+🏗️ DEPLOY LÊN PRODUCTION:
+1. Build: npm run build
+2. Kiểm tra dist/ folder:
+   - manifest.json có ở đó
+   - sw.js có ở đó
+   - index.html có meta tags PWA
+3. Deploy trên server hỗ trợ HTTPS (quan trọng!)
+4. Truy cập từ mobile và cài đặt
+
+📖 HƯỚNG DẪN CÀI ĐẶT CHI TIẾT:
+Xem file: PWA_INSTALL_GUIDE.md
+
+❓ KIỂM TRA INSTALLATION:
+1. Mở DevTools (F12)
+2. Tab Application → Service Workers
+3. Bạn sẽ thấy "sw.js" đang chạy
+4. Kiểm tra Manifest tab để xem cấu hình PWA
+
+💡 GỢI Ý:
+- Khi deploy, chắc chắn sử dụng HTTPS (PWA yêu cầu)
+- Icon app hiện trên màn hình chính với 💰 emoji
+- Lần đầu tiên truy cập sẽ show InstallPrompt (nếu hỗ trợ)
+- Dữ liệu chi tiêu được lưu cục bộ, không bao giờ gửi lên server
+
+🎯 NEXT STEPS:
+1. ✅ PWA đã setup xong
+2. ✅ Build project: npm run build
+3. Deploy lên production server (HTTP cho testing, HTTPS cho production)
+4. Test cài đặt trên điện thoại
+
+---
+Happy Expense Tracking! 💰

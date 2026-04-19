@@ -1,0 +1,138 @@
+.install-prompt {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.install-prompt-content {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+}
+
+.install-prompt-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.install-prompt-icon {
+  font-size: 1.5rem;
+}
+
+.install-prompt-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.install-prompt-content p {
+  margin: 0 0 1.25rem 0;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.install-prompt-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.install-btn,
+.dismiss-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.install-btn {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44b0a3 100%);
+  color: white;
+}
+
+.install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+.install-btn:active {
+  transform: translateY(0);
+}
+
+.dismiss-btn {
+  background: transparent;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+.dismiss-btn:hover {
+  background: #f5f5f5;
+}
+
+@media (max-width: 480px) {
+  .install-prompt {
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+  }
+
+  .install-prompt-content {
+    padding: 1rem;
+  }
+
+  .install-prompt-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .install-btn,
+  .dismiss-btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .install-prompt-content {
+    background: #1a1a1a;
+    color: #f0f0f0;
+  }
+
+  .install-prompt-header h3 {
+    color: #f0f0f0;
+  }
+
+  .install-prompt-content p {
+    color: #b0b0b0;
+  }
+
+  .dismiss-btn {
+    color: #b0b0b0;
+    border-color: #333;
+  }
+
+  .dismiss-btn:hover {
+    background: #2a2a2a;
+  }
+}
