@@ -6,10 +6,13 @@ import {
   deleteExpenseFromDb,
   subscribeToExpenses,
 } from '../services/firebase';
+import { useToast } from '../hooks/useToast';
 import ExpenseForm from './ExpenseForm';
 import ExpenseList from './ExpenseList';
 import CategoryStats from './CategoryStats';
+import MonthlyStats from './MonthlyStats';
 import InstallPrompt from './InstallPrompt';
+import Toast from './Toast';
 import './ExpenseManager.css';
 
 export default function ExpenseManager() {
@@ -19,6 +22,8 @@ export default function ExpenseManager() {
   });
   const [isOnline, setIsOnline] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const { toasts, addToast, removeToast } = useToast();
 
   // Initialize and load expenses
   useEffect(() => {
@@ -80,35 +85,83 @@ export default function ExpenseManager() {
 
     try {
       const id = await addExpenseToDb(newExpense);
+      // Immediately update state with new expense
+      const fullExpense: Expense = { id, ...newExpense };
+      setExpenses([fullExpense, ...expenses]);
       console.log('Expense added:', id);
     } catch (error) {
       console.error('Error adding expense:', error);
+      addToast('Lỗi khi thêm chi tiêu', 'error');
     }
+  };
+
+  const handleEditExpense = (expense: Expense) => {
+    // Load expense data into form
+    setEditingExpense(expense);
+  };
+
+  const handleSaveEdit = async (
+    id: string,
+    description: string,
+    amount: number,
+    category: CategoryType,
+    date: string
+  ) => {
+    try {
+      const updatedExpense: Omit<Expense, 'id'> = {
+        description,
+        amount,
+        category,
+        date,
+      };
+
+      // Create new expense with same ID
+      const fullExpense: Expense = { id, ...updatedExpense };
+
+      // Immediately update state
+      setExpenses(expenses.map(e => e.id === id ? fullExpense : e));
+      setEditingExpense(null);
+
+      // Save to db - delete old and add new
+      await deleteExpenseFromDb(id);
+      await addExpenseToDb(updatedExpense);
+      
+      addToast('Chi tiêu đã được cập nhật', 'edit');
+      console.log('Expense updated:', id);
+    } catch (error) {
+      console.error('Error updating expense:', error);
+      // Revert state on error
+      const saved = localStorage.getItem('expenses');
+      if (saved) setExpenses(JSON.parse(saved));
+      addToast('Lỗi khi cập nhật chi tiêu', 'error');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingExpense(null);
   };
 
   const handleDeleteExpense = async (id: string) => {
-    if (!confirm('Bạn có chắc chắn muốn xóa chi tiêu này?')) return;
-
     try {
+      // Immediately update state
+      setExpenses(expenses.filter(e => e.id !== id));
       await deleteExpenseFromDb(id);
+      addToast('Chi tiêu đã được xóa', 'delete');
     } catch (error) {
       console.error('Error deleting expense:', error);
-    }
-  };
-
-  const handleEditExpense = async (expense: Expense) => {
-    if (!confirm('Bạn có chắc chắn muốn chỉnh sửa chi tiêu này?')) return;
-
-    try {
-      await deleteExpenseFromDb(expense.id);
-    } catch (error) {
-      console.error('Error updating:', error);
+      // Revert state on error
+      const saved = localStorage.getItem('expenses');
+      if (saved) setExpenses(JSON.parse(saved));
+      addToast('Lỗi khi xóa chi tiêu', 'error');
     }
   };
 
   return (
     <div className="expense-manager">
       <InstallPrompt />
+      
+      {/* Toast notifications */}
+      <Toast toasts={toasts} onRemove={removeToast} />
       
       {/* Offline indicator */}
       {!isOnline && (
@@ -118,13 +171,19 @@ export default function ExpenseManager() {
       )}
 
       <header className="app-header">
-        <h1>📊 Quản Lý Chi Tiêu</h1>
+        <h1>📊 Money Notebook</h1>
         <p>Theo dõi và quản lý chi tiêu cá nhân của bạn</p>
       </header>
 
       <main className="app-main">
         <div className="form-section">
-          <ExpenseForm onAddExpense={handleAddExpense} />
+          <ExpenseForm 
+            onAddExpense={handleAddExpense}
+            onEditExpense={handleSaveEdit}
+            editingExpense={editingExpense}
+            onCancelEdit={handleCancelEdit}
+            onSuccess={(msg) => addToast(msg, editingExpense ? 'edit' : 'success')}
+          />
         </div>
 
         <div className="content-section">
@@ -145,6 +204,10 @@ export default function ExpenseManager() {
           <div className="right-column">
             <CategoryStats expenses={expenses} />
           </div>
+        </div>
+
+        <div className="monthly-section">
+          <MonthlyStats expenses={expenses} />
         </div>
       </main>
     </div>

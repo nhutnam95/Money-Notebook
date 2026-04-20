@@ -6,12 +6,38 @@
   margin-bottom: 2rem;
 }
 
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
 .expense-form h2 {
-  margin: 0 0 1.5rem 0;
+  margin: 0;
   color: #333;
   font-size: 1.5rem;
   border-bottom: 3px solid #4ecdc4;
   padding-bottom: 0.5rem;
+}
+
+.cancel-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.cancel-btn:hover {
+  color: #f44336;
 }
 
 .form-group {
@@ -44,7 +70,13 @@
   box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
 }
 
+.form-actions {
+  display: flex;
+  gap: 1rem;
+}
+
 .submit-btn {
+  flex: 1;
   background: linear-gradient(135deg, #4ecdc4 0%, #44b0a3 100%);
   color: white;
   padding: 0.75rem 2rem;
@@ -65,6 +97,35 @@
   transform: translateY(0);
 }
 
+.cancel-btn-secondary {
+  background: #f0f0f0;
+  color: #666;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.input-error {
+  border-color: #f44336 !important;
+  background-color: #ffebee;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+  display: block;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .expense-form {
     padding: 1.5rem;
@@ -72,5 +133,9 @@
 
   .expense-form h2 {
     font-size: 1.25rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
   }
 }

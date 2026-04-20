@@ -40,6 +40,7 @@
   margin: 0 0 0.5rem 0;
   font-size: 2.5rem;
   font-weight: 700;
+  color: white;
 }
 
 .app-header p {
@@ -71,6 +72,10 @@
 
 .right-column {
   min-width: 0;
+}
+
+.monthly-section {
+  margin-top: 3rem;
 }
 
 .loading {

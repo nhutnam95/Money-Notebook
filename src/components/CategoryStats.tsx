@@ -7,10 +7,20 @@ interface CategoryStatsProps {
 }
 
 export default function CategoryStats({ expenses }: CategoryStatsProps) {
+  // Filter to show only current month's expenses
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  
+  const currentMonthExpenses = expenses.filter((expense) => {
+    const expenseDate = new Date(expense.date + 'T00:00:00');
+    return expenseDate.getFullYear() === currentYear && expenseDate.getMonth() === currentMonth;
+  });
+
   const categories = ['food', 'transport', 'entertainment', 'shopping', 'utilities', 'other'] as const;
   
   const stats = categories.map((category) => {
-    const categoryExpenses = expenses.filter((e) => e.category === category);
+    const categoryExpenses = currentMonthExpenses.filter((e) => e.category === category);
     const total = categoryExpenses.reduce((sum, e) => sum + e.amount, 0);
     return {
       category,

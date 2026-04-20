@@ -9,9 +9,19 @@ interface ExpenseListProps {
 }
 
 export default function ExpenseList({ expenses, onDeleteExpense, onEditExpense }: ExpenseListProps) {
-  const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  // Filter to show only current month's expenses
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  
+  const currentMonthExpenses = expenses.filter((expense) => {
+    const expenseDate = new Date(expense.date + 'T00:00:00');
+    return expenseDate.getFullYear() === currentYear && expenseDate.getMonth() === currentMonth;
+  });
 
-  const groupedByDate = expenses.reduce(
+  const totalAmount = currentMonthExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+
+  const groupedByDate = currentMonthExpenses.reduce(
     (acc, expense) => {
       if (!acc[expense.date]) {
         acc[expense.date] = [];
@@ -41,12 +51,12 @@ export default function ExpenseList({ expenses, onDeleteExpense, onEditExpense }
     }).format(amount);
   };
 
-  if (expenses.length === 0) {
+  if (currentMonthExpenses.length === 0) {
     return (
       <div className="expense-list">
         <h2>Danh sách chi tiêu</h2>
         <div className="empty-state">
-          <p>Chưa có chi tiêu nào. Hãy thêm chi tiêu đầu tiên!</p>
+          <p>Chưa có chi tiêu nào trong tháng này. Hãy thêm chi tiêu đầu tiên!</p>
         </div>
       </div>
     );
@@ -63,7 +73,7 @@ export default function ExpenseList({ expenses, onDeleteExpense, onEditExpense }
         </div>
         <div className="count">
           <span>Số giao dịch:</span>
-          <strong>{expenses.length}</strong>
+          <strong>{currentMonthExpenses.length}</strong>
         </div>
       </div>
 
