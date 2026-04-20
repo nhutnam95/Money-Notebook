@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './Toast.css';
 
 export type ToastType = 'success' | 'error' | 'delete' | 'edit' | 'info';
